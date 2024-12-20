@@ -51,7 +51,7 @@ rule mask_gubbins:
     input:
         recombination_predictions_gff = lambda wildcards: expand(f"results/{wildcards.prefix}/gubbins/{wildcards.prefix}.recombination_predictions.gff"),
     output:
-        gubbins_masked = "results/{{prefix}}/phylo_analysis/gubbins/{{ref_name}}_gubbins_masked.fa"
+        gubbins_masked = "results/{{prefix}}/phylo_analysis/gubbins/{{ref_name}}_gubbins_masked.fa",
         masked_recomb_pos = "results/{{prefix}}/phylo_analysis/genome_alignment/{{ref_name}}_masked_recomb_positions.txt"
     params:
         prefix =  config["prefix"],
