@@ -1,0 +1,16 @@
+# General information 
+prefix: KPNIH1
+
+# Gubbins
+alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/example.phy
+threads: 1
+first_tree_algorithm: fasttree
+first_model: JC
+tree_builder: raxmlng
+tree_builder_model: GTRGAMMA
+outgroup: LngfishAu
+
+# IQtree parameters
+iqtree_model: "GTR+ASC+G"
+bootstrap_count: 5000
+num_unsuccessful_iterations: 100
