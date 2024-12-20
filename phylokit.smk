@@ -66,7 +66,7 @@ rule iqtree:
         ml_tree_newick_fmt = "results/{{prefix}}/IQtree/{{prefix}}.treefile"
         iqtree_report = "results/{{prefix}}/IQtree/.iqtree"
     params:
-       iqtree_model = config["iqtree_model],
+       iqtree_model = config["iqtree_model"],
        bootstrap_count = config["bootstrap_count"],
        outgroup = config["outgroup"],
        num_unsuccessful_iterations = config["num_unsuccessful_iterations"],
