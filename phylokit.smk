@@ -63,7 +63,7 @@ rule iqtree:
     input:
         gubbins_masked = lambda wildcards: expand(f"results/{wildcards.prefix}/gubbins/{wildcards.prefix}.filtered_polymorphic_sites.fasta"),
     output:
-        ml_tree_newick_fmt = "results/{{prefix}}/IQtree/{{prefix}}.treefile"
+        ml_tree_newick_fmt = "results/{{prefix}}/IQtree/{{prefix}}.treefile",
         iqtree_report = "results/{{prefix}}/IQtree/.iqtree"
     params:
        iqtree_model = config["iqtree_model"],
