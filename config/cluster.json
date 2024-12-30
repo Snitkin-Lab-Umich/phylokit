@@ -5,7 +5,7 @@
      "partition": "standard",
      "nodes": 1,
      "procs": 7,
-     "pmem": "30GB",
+     "pmem": "35GB",
      "walltime": "12:00:00",
      "email": "kgontjes@umich.edu",
      "mail_type": "BEGIN,FAIL",
