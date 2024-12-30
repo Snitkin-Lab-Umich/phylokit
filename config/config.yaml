@@ -1,16 +1,18 @@
 # General information 
-prefix: KPNIH1
-
+prefix: example 
+ 
 # Gubbins
-alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/example.phy
+alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln
 threads: 1
 first_tree_algorithm: fasttree
 first_model: JC
 tree_builder: raxmlng
 tree_builder_model: GTRGAMMA
-outgroup: LngfishAu
+outgroup: 2098
+gubbins_dir: results/gubbins
 
 # IQtree parameters
-iqtree_model: "GTR+ASC+G"
+iqtree_model: MFP
 bootstrap_count: 5000
 num_unsuccessful_iterations: 100
+iqtree_dir: results/IQtree
