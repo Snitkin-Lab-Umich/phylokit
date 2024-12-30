@@ -3,7 +3,7 @@ prefix: example
  
 # Gubbins
 alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln
-threads: 1
+threads: 6
 first_tree_algorithm: fasttree
 first_model: JC
 tree_builder: raxmlng
