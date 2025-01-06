@@ -3,13 +3,14 @@ prefix: example
  
 # Gubbins
 alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln
-threads: 6
+threads: 14
 first_tree_algorithm: fasttree
 first_model: JC
 tree_builder: raxmlng
 tree_builder_model: GTRGAMMA
 outgroup: 2098
 gubbins_dir: results/gubbins
+tree_args: " --threads 14"
 
 # IQtree parameters
 iqtree_model: MFP
