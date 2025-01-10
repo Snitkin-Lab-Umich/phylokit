@@ -27,7 +27,7 @@ recomb_regions = defaultdict(list)
 for row in gff.iterrows():
     start = row[1][3]
     end = row[1][4]
-    region = list(range(start, end))
+    region = list(range(start, end+1))
     taxa = row[1][8].split(';')[2]
     taxa = taxa.replace('taxa=\"', '')
     taxa = taxa.replace('\"', '')
@@ -46,7 +46,7 @@ for record in aln:
     seq_str = list(str(record.seq))
     masked_indices = recomb_regions.get(record.id, [])
     for index in masked_indices:
-        seq_str[index] = 'N'
+        seq_str[index-1] = 'N'
     seq_str = ''.join(seq_str)
     new_record = SeqRecord(Seq(seq_str), id=record.id, description="")
     sample_masked_indices[record.id] = masked_indices
