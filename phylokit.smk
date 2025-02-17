@@ -37,16 +37,14 @@ rule gubbins:
         file_prefix = config["prefix"],
         threads = config["threads"],
         first_tree_algorithm = config["first_tree_algorithm"],
-        first_model = config["first_model"],
-        tree_builder = config["tree_builder"],
-        tree_builder_model = config["tree_builder_model"],
+        first_model = config["first_model"], 
         outgroup = config["outgroup"] 
     singularity:
         "docker://staphb/gubbins:3.3.5"
     shell:
         """
         cd {params.pwd} && \
-        run_gubbins.py --prefix {params.file_prefix} --threads {params.threads} --verbose --no-cleanup --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --tree-builder {params.tree_builder} --model {params.tree_builder_model} --outgroup {params.outgroup} {input.alignment}
+        run_gubbins.py --prefix {params.file_prefix} --threads {params.threads} --verbose --no-cleanup --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --best-model --outgroup {params.outgroup} {input.alignment}
         """
 
 rule mask_gubbins:
