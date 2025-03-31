@@ -44,7 +44,7 @@ rule gubbins:
     shell:
         """
         cd {params.pwd} && \
-        run_gubbins.py --prefix {params.file_prefix} --threads {params.threads} --verbose --no-cleanup --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --best-model --outgroup {params.outgroup} {input.alignment}
+        run_gubbins.py --prefix {params.file_prefix} --threads {params.threads} --verbose --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --best-model --outgroup {params.outgroup} {input.alignment}
         """
 
 rule mask_gubbins:
