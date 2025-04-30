@@ -1,17 +1,24 @@
-# General information 
-prefix: example 
- 
+# Do not make changes to variables unless explicitly asked to 
+# unless you are comfortable making changes to the flags for Gubbins and IQtree
+
+# Define the prefix of the files 
+prefix: example
+
+# Define the name of the run
+# Rename this to your preferred naming convention with this format:year-month-day_Project_Name_phylokit
+run_name: 2025-04-25_Project_Example_phylokit
+
 # Gubbins
-alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln
+alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln # Set path to alignment file
 threads: 8
 first_tree_algorithm: fasttree
 first_model: JC
-outgroup: 2098
-gubbins_dir: results/gubbins
+outgroup: 2098 # Specify outgroup in your multiple sequence alignment
 tree_args: " --threads 8"
 
 # IQtree parameters
 iqtree_model: MFP
 bootstrap_count: 5000
 num_unsuccessful_iterations: 200
-iqtree_dir: results/IQtree
+
+
