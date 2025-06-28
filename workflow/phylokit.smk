@@ -51,7 +51,7 @@ rule mask_gubbins:
         prefix =  config["prefix"],
         alignment = config["alignment"]
     wrapper:
-        "file:wrapper_functions/mask_gubbins" 
+        "file:workflow/wrapper_functions/mask_gubbins" 
 
 rule iqtree:
     input:
