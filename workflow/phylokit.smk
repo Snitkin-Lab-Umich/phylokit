@@ -70,4 +70,4 @@ rule iqtree:
     log:
         iqtree_log = "logs/{run}/IQtree/{prefix}.iqtree.log"
     shell:
-        "iqtree -s {input.gubbins_masked_var_sites} -nt AUTO -m {params.iqtree_model} -B {params.bootstrap_count} -o {params.outgroup} -nstop {params.num_unsuccessful_iterations} -pre {params.iqtree_dir}/{params.iqtree_prefix} &> {log.iqtree_log}" 
+        "iqtree -s {input.gubbins_masked_var_sites} -st DNA -nt AUTO -m {params.iqtree_model} -B {params.bootstrap_count} -o {params.outgroup} -nstop {params.num_unsuccessful_iterations} -pre {params.iqtree_dir}/{params.iqtree_prefix} &> {log.iqtree_log}" 
