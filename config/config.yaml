@@ -17,8 +17,6 @@ outgroup: 2098 # Specify outgroup in your multiple sequence alignment
 tree_args: " --threads 8"
 
 # IQtree parameters
-iqtree_model: MFP
+iqtree_model: MFP+ASC
 bootstrap_count: 5000
 num_unsuccessful_iterations: 200
-
-
