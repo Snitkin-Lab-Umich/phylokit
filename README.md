@@ -5,31 +5,38 @@ Snakemake pipeline to generate a phylogenetic tree from a multiple sequence alig
 This pipeline should be run on the alignment file as soon as it is available after running [SNPkit](https://github.com/Snitkin-Lab-Umich/snpkit).
 
 In short, it performs the following steps:
-- [Gubbins](https://github.com/nickjcroucher/gubbins) (v3.3.5) is used to detect and mask regions of recombination in the whole genome alignment. It idenitfies regions with elevated substitution densities indicative of recombination and masks them with 'N' characters to avoid misleading phylogenetic inference.
+- [Gubbins](https://github.com/nickjcroucher/gubbins) (v3.4.1) is used to detect and mask regions of recombination in the whole genome alignment. It idenitfies regions with elevated substitution densities indicative of recombination and masks them with 'N' characters to avoid misleading phylogenetic inference.
 - [snp-sites](https://sanger-pathogens.github.io/snp-sites/) (v2.5.1) is then run on the Gubbins masked alignment to extract only the variable (SNP) sites. This produces a compact alignment of only SNP positions and focuses the phylogenetic analysis on informative sites. 
-- [iqtree](http://www.iqtree.org/) (v2.4.0) takes the resulting SNP alignment and builds a maximum likelihood phylogenetic tree.
+- [iqtree](http://www.iqtree.org/) (v3.1.3) takes the resulting SNP alignment and builds a maximum likelihood phylogenetic tree.
+- [pairsnp](https://github.com/gtonkinhill/pairsnp/) (v0.3.1) takes the resulting SNP alignment and builds a core and noncore SNP distance matrices.
 
 
 The workflow generates all the output in the output prefix folder set in the config file (instructions on setup found below). Each workflow steps gets its own individual folder as shown:
 
 ```
-results/2025-04-25_Project_MDHHS_phylokit/
+results/2025-08-19_Project_Example_phylokit/
 ├── gubbins
 ├── gubbins_masked
-└── IQtree
+└── iqtree
+└── snp_distance_matrices 
 ```
 
 ## Setup config and cluster files
 
 **_If you are just testing this pipeline, the config file is already loaded with test data, so you do not need to make any additional changes to them. However, it is a good idea to change the run (name of your output folder) and prefix in the config file to give you an idea of what variables need to be modified when running your alignment on phylokit._**
 
-### Config
-As an input, the snakemake file takes a config file where you can set the path to your alignment file, define the name of your output results folder and prefix of files etc. Instructions on how to modify `config.yaml` is found in `config/`. 
+### Profile's Cluster Config File (profile/config.yaml)
+As an input, the snakemake file takes a config file where you clarify the cluster configuation. 
 
-### Cluster file
-In `config/cluster.json`, change `email` to your email. 
+Change `--mail-user=youremail@umich.edu` to your email. 
+Change `- slurm_acount` to your account.   
 
-Increase the `walltime` as necessary in `config/cluster.json`, however, keep in mind that asking for too high of a job run time will have the job pending for a while so ensure the jobs are being submitted in a timely manner. 
+### Config file (config/config.yaml)
+As an input, snakemake takes a config where you can set the path to your alignment file, define the name of your output results folder and prefix of files. Instructions on how to modify `config.yaml` is found in `config/`. 
+
+Each rule has their own Slurm resource specifications. 
+
+Please updated the `mem_mb` and `runtime`, as necessary. Keep in mind that increasing job specifications may leave the job pending.
 
 
 ## Installation
@@ -42,6 +49,7 @@ cd /scratch/esnitkin_root/esnitkin1/your_uniqname/
 ```
 
 > Clone the github directory onto your system. 
+
 ```
 git clone https://github.com/Snitkin-Lab-Umich/phylokit.git
 ```
@@ -72,15 +80,23 @@ This workflow makes use of singularity containers available through [State Publi
 > Preview the steps in phylokit by performing a dryrun of the pipeline. 
 
 ```
-
-snakemake -s workflow/phylokit.smk --dryrun 
+ 
+snakemake --profile profile/ --configfile config/config.yaml --dry-run
 
 ```
 
 >Run phylokit on Great lakes HPC (You will copy paste the command on the terminal directly—your terminal window will be busy and cannot be used. You would have to open to a new tab to work on the terminal). 
 
 ```
-snakemake -s workflow/phylokit.smk --use-conda  --use-singularity -j 999 --cluster "sbatch -A {cluster.account} -p {cluster.partition} -N {cluster.nodes}  -t {cluster.walltime} -c {cluster.procs} --mem-per-cpu {cluster.pmem}  --output=slurm_out/slurm-%j.out" --conda-frontend mamba --cluster-config config/cluster.json --configfile config/config.yaml --latency-wait 1000
+snakemake --profile profile/ --configfile config/config.yaml  
+
+```
+
+### Run phylokit using a custom configuration file (recommended)
+
+```
+snakemake --profile profile/ --configfile config/config_[name].yaml  
+
 ```
 
 > Submit phylokit as a batch job on Great Lakes. 
@@ -104,14 +120,11 @@ Change these `SBATCH` commands: `--job-name` to a more descriptive name like run
 module load snakemake singularity mamba
 
 # run snakemake
-snakemake -s phylokit.smk --use-conda  --use-singularity -j 999 --cluster "sbatch -A {cluster.account} -p {cluster.partition} -N {cluster.nodes}  -t {cluster.walltime} -c {cluster.procs} --mem-per-cpu {cluster.pmem}  --output=slurm_out/slurm-%j.out" --conda-frontend mamba --cluster-config config/cluster.json --configfile config/config.yaml --latency-wait 1000
+snakemake --profile profile/ --configfile config/config.yaml  
 
 ```
 
-
 ![DAG of pipeline](images/rulegraph.png)
-
-
 
 ## Dependencies
 
@@ -123,5 +136,4 @@ snakemake -s phylokit.smk --use-conda  --use-singularity -j 999 --cluster "sbatc
 * [Gubbins](https://github.com/nickjcroucher/gubbins/blob/master/docs/gubbins_manual.md)
 * [IQTree](http://www.iqtree.org/)
 * [snp-sites](https://sanger-pathogens.github.io/snp-sites/)
-
-
+* [pairsnp](https://github.com/gtonkinhill/pairsnp/)

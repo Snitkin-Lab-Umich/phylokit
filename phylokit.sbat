@@ -6,14 +6,12 @@
 #SBATCH --export=ALL
 #SBATCH --partition=standard
 #SBATCH --account=esnitkin1
-#SBATCH --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=10g --time=24:15:00
+#SBATCH --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=10g --time=72:00:00
 
 ## Note: Chang the mail-user, account, and SBATCH mem/time requirements as you see fit
 
-# load modules
+# Load modules
 module load snakemake singularity mamba
 
-# run snakemake
-snakemake -s workflow/phylokit.smk --use-conda  --use-singularity -j 999 --cluster "sbatch -A {cluster.account} -p {cluster.partition} -N {cluster.nodes}  -t {cluster.walltime} -c {cluster.procs} --mem-per-cpu {cluster.pmem}  --output=slurm_out/slurm-%j.out" --conda-frontend mamba --cluster-config config/cluster.json --configfile config/config.yaml --latency-wait 1000
-
-
+# Run snakemake
+snakemake --profile profile/ --configfile config/config.yaml

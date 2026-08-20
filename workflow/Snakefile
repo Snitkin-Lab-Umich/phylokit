@@ -1,0 +1,43 @@
+# Authors: Kyle Gontjes, Dhatri Badri, & Ali Pirani
+# Date: 08-19-2026
+
+configfile: "config/config.yaml"
+
+import os
+from datetime import datetime
+ 
+PREFIX = config["prefix"]
+RUN = config["run_name"]
+
+onstart:
+    os.makedirs("slurm_out/", exist_ok=True)
+    os.makedirs("results/", exist_ok=True)  
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting phylokit run: {RUN}")
+
+onsuccess:
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] phylokit run complete: {RUN}")
+
+onerror:
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] phylokit run failed: {RUN}. Check logs/ for details.")
+
+# Rule all information
+rule all:
+    input:
+        expand(
+            "results/{run}/snp_distance_matrices/{prefix}_{matrix}.csv",
+            run=RUN,
+            prefix=PREFIX,
+            matrix=[
+                "pre_gubbins_noncore_snp_matrix",
+                "pre_gubbins_core_snp_matrix",
+                "gubbins_masked_core_snp_matrix",
+                "gubbins_masked_noncore_snp_matrix",
+            ]
+        ),
+        ml_tree_newick_fmt = expand("results/{run}/iqtree/{prefix}.treefile", run=RUN, prefix=PREFIX), 
+
+####### rules ####### 
+include: "rules/gubbins.smk"
+include: "rules/mask_gubbins.smk"
+include: "rules/iqtree.smk"
+include: "rules/snp_distance_matrix.smk"

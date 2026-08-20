@@ -6,17 +6,35 @@ prefix: example
 
 # Define the name of the run
 # Rename this to your preferred naming convention with this format:year-month-day_Project_Name_phylokit
-run_name: 2025-04-25_Project_Example_phylokit
+run_name: 2026-08-17_Project_Example_phylokit
+
+# Input
+alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln # Set path to alignment file
+
+# Shared
+threads: 8
+outgroup: # Specify outgroup in your multiple sequence alignment, if you want to use one. Leave blank if no outgroup is desired.
 
 # Gubbins
-alignment: /nfs/turbo/umms-esnitkin/Github/phylokit/example_data/PMEN1.aln # Set path to alignment file
-threads: 8
 first_tree_algorithm: fasttree
 first_model: JC
-outgroup: 2098 # Specify outgroup in your multiple sequence alignment
-tree_args: " --threads 8"
+tree_builder: iqtree  # To be consistent with --best-model
+filter_percentage: 25.0
+mem_mb_gubbins: 16000
+runtime_gubbins: 2880
+
+# Mask gubbins runtime
+mem_mb_gubbins_mask: 10000
+runtime_gubbins_mask: 60
 
 # IQtree parameters
 iqtree_model: MFP+ASC
-bootstrap_count: 5000
+bnni: false
+bootstrap_count: 1000
 num_unsuccessful_iterations: 200
+mem_mb_iqtree: 16000
+runtime_iqtree: 2880
+
+# SNP distance matrix curation
+mem_mb_snp_distance_matrix: 8000
+runtime_snp_distance_matrix: 30

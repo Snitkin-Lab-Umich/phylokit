@@ -1,0 +1,7 @@
+name: snp_distance_matrix
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies: 
+  - pairsnp=0.3.1
