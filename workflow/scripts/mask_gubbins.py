@@ -32,7 +32,7 @@ def is_gff_effectively_empty(gff_file):
                 return False
     return True
 
-def mask_recombinant_regions(gff_file, alignment, outdir, prefix):
+def mask_recombinant_regions(gff_file, alignment, outdir, prefix, var_site_outfile, raw_var_site_outfile, core_var_site_outfile, raw_core_var_site_outfile):
     # read in alignment and gubbins gff file
     gff = pd.read_csv(gff_file, sep='\t', skiprows=2, header=None)
     aln = AlignIO.read(alignment, 'fasta')
@@ -66,13 +66,6 @@ def mask_recombinant_regions(gff_file, alignment, outdir, prefix):
     # write new FASTA file with recombinant regions masked
     fasta_outfile = os.path.join(outdir, prefix + "_gubbins_masked.fa")
     text_outfile = os.path.join(outdir, prefix + "_masked_recomb_positions.txt")
-    # SNP Files
-    ## All SNPs
-    var_site_outfile = os.path.join(outdir, prefix + "_gubbins_masked_var_sites.fa")
-    raw_var_site_outfile = os.path.join(outdir, prefix + "_pre_gubbins_masked_var_sites.fa")
-    ## Core SNPs
-    core_var_site_outfile = os.path.join(outdir, prefix + "_gubbins_masked_core_var_sites.fa")
-    raw_core_var_site_outfile = os.path.join(outdir, prefix + "_pre_gubbins_masked_core_var_sites.fa")
 
     with open(fasta_outfile, 'w') as handle:
         SeqIO.write(new_aln, handle, 'fasta')
@@ -90,13 +83,24 @@ def mask_recombinant_regions(gff_file, alignment, outdir, prefix):
     shell(f'snp-sites {alignment} -m -c -o {raw_core_var_site_outfile}') 
 
 def main(gff_file, alignment, outdir, prefix):
+    # SNP output Files
+    ## All SNPs
     var_site_outfile = os.path.join(outdir, prefix + "_gubbins_masked_var_sites.fa")
+    raw_var_site_outfile = os.path.join(outdir, prefix + "_pre_gubbins_masked_var_sites.fa")
+    ## Core SNPs
+    core_var_site_outfile = os.path.join(outdir, prefix + "_gubbins_masked_core_var_sites.fa")
+    raw_core_var_site_outfile = os.path.join(outdir, prefix + "_pre_gubbins_masked_core_var_sites.fa")
+
     if is_gff_effectively_empty(gff_file):
         print("GFF is empty or has no data. Running snp-sites on original alignment.")
+        # All SNPs - raw and masked are the same
         shell(f'snp-sites {alignment} -m -o {var_site_outfile}')
-        shell(f'snp-sites {alignment} -m -c -o {core_var_site_outfile}') 
+        shell(f'snp-sites {alignment} -m -o {raw_var_site_outfile}')
+        # Core SNPs - raw and masked are the same
+        shell(f'snp-sites {alignment} -m -c -o {core_var_site_outfile}')
+        shell(f'snp-sites {alignment} -m -c -o {raw_core_var_site_outfile}') 
     else:
         print("GFF contains data. Masking recombinant regions before phylogenetic anaysis.")
-        mask_recombinant_regions(gff_file, alignment, outdir, prefix)
+        mask_recombinant_regions(gff_file, alignment, outdir, prefix, var_site_outfile, raw_var_site_outfile, core_var_site_outfile, raw_core_var_site_outfile)
 
 main(gff_file, alignment, outdir, prefix)

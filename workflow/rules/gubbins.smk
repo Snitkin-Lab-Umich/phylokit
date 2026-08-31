@@ -15,6 +15,9 @@ rule gubbins:
         outgroup_flag=lambda wildcards: (
             f"--outgroup {config['outgroup']}" if config.get("outgroup") else ""
         ),
+        tree_args_flag = lambda wildcards: (
+            f'--tree-args " {config["tree_args"]}"' if config.get("tree_args") else ""
+        ),
     log:
         "logs/{run}/gubbins/{prefix}.gubbins.log",
     benchmark: 
@@ -32,5 +35,5 @@ rule gubbins:
         mkdir -p {params.outdir}
         cd {params.outdir}
         run_gubbins.py --version > $LOGFILE 2>&1
-        run_gubbins.py --prefix {params.prefix} --threads {threads} --verbose --filter-percentage {params.filter_percentage} --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --tree-builder {params.tree_builder} --best-model {params.outgroup_flag} {input.alignment}  >> $LOGFILE 2>&1
+        run_gubbins.py --prefix {params.prefix} --threads {threads} --verbose --filter-percentage {params.filter_percentage} --first-tree-builder {params.first_tree_algorithm} --first-model {params.first_model} --tree-builder {params.tree_builder} --best-model {params.outgroup_flag} {params.tree_args_flag} {input.alignment} >> $LOGFILE 2>&1
         """

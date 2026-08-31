@@ -21,7 +21,7 @@ default-resources:
   - slurm_partition=standard
   - runtime=90
   - mem_mb=5000 
-  - slurm_extra="--mail-type=BEGIN,FAIL,END --mail-user=kgontjes@umich.edu --output=slurm_out/slurm-%j.out --error=slurm_out/slurm-%j.err"
+  - slurm_extra="--mail-type=BEGIN,FAIL,END --mail-user=youremail@umich.edu --output=slurm_out/slurm-%j.out --error=slurm_out/slurm-%j.err"
 
 # Config
 configfile: config/config.yaml

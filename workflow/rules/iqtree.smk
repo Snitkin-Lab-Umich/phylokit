@@ -25,4 +25,15 @@ rule iqtree:
     threads:
         config["threads"]
     shell:
-        "iqtree -s {input.gubbins_masked_var_sites} -st DNA -T {threads} -m {params.iqtree_model} -mem {params.mem_gb}G -bb {params.bootstrap_count} -nstop {params.num_unsuccessful_iterations} -pre {params.iqtree_prefix} {params.outgroup_flag} {params.bnni_flag} &> {log}"
+        """
+        # Check sequence count and only do bootstrap if count > 3
+        sequence_count=$(grep -v ">" {input.gubbins_masked_var_sites} | sort -u | wc -l )
+        if [ "$sequence_count" -le 3 ]; then
+            bb_flag=""
+        else 
+            bb_flag="-bb {params.bootstrap_count}"
+        fi
+
+        # IQ-TREE command
+        iqtree -s {input.gubbins_masked_var_sites} -st DNA -T AUTO -m {params.iqtree_model} -mem {params.mem_gb}G $bb_flag -nstop {params.num_unsuccessful_iterations} -pre {params.iqtree_prefix} {params.outgroup_flag} {params.bnni_flag} &> {log}
+        """

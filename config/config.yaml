@@ -22,6 +22,7 @@ tree_builder: iqtree  # To be consistent with --best-model
 filter_percentage: 25.0
 mem_mb_gubbins: 16000
 runtime_gubbins: 2880
+tree_args: "-T AUTO"
 
 # Mask gubbins runtime
 mem_mb_gubbins_mask: 10000
